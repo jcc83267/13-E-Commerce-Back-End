@@ -9,16 +9,14 @@ router.get('/', (req, res) => {
   // be sure to include its associated Category and Tag data
   Product.findAll({
     attributes: ['id', 'product_name', 'price', 'stock',],
-    include: [
-      {
+    include: [{
         model: Category,
         attributes: ['category_name']
       },
       {
         model: Tag,
         attributes: ['tag_name']
-      }
-    ]
+      }]
   })
     .then(dbProductData => res.json(dbProductData))
     .catch(err => {
@@ -33,17 +31,14 @@ router.get('/:id', (req, res) => {
   // be sure to include its associated category and Tag data
   Product.findOne({
     where: { id: req.params.id },
-    include: [
-      {
+    include: [{
         model: Category,
         attributes: ['category_name']
       },
       {
         model: Tag,
         attributes: ['tag_name']
-      }
-    ]
-
+      }]
   })
     .then(dbProductData => {
       if (!dbProductData) {
@@ -103,10 +98,6 @@ router.put('/:id', (req, res) => {
       return ProductTag.findAll({ where: { product_id: req.params.id } });
     })
     .then((productTags) => {
-      console.log('+++++++++++++++++++++++++++++++++')
-      console.log(productTags)
-      console.log('+++++++++++++++++++++++++++++++++')
-
       // get list of current tag_ids
       const productTagIds = productTags.map(({ tag_id }) => tag_id);
       // create filtered list of new tag_ids
